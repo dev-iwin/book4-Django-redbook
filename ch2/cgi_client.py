@@ -1,3 +1,6 @@
+# 예제 2-15 CGI 웹 서버 시험용 클라이언트
+# ch2>notetpad cgi-client.py
+
 from urllib.request import urlopen
 from urllib.parse import urlencode
 
