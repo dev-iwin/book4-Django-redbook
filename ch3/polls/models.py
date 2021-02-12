@@ -1,4 +1,4 @@
-from django.db import models  # 기본으로 import 되어있구나
+from django.db import models
 
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
@@ -8,7 +8,7 @@ class Question(models.Model):
         return self.question_text
 
 class Choice(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)  # .CASCADE() ?
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
     choice_text = models.CharField(max_length=200)
     votes = models.IntegerField(default=0)
 
