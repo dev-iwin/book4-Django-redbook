@@ -8,12 +8,12 @@ def index(request):
     context = {'latest_question_list': latest_question_list}
     return render(request, 'polls/index.html', context)
 
-def detail(request):
-    question = get_object_or_404(Choice)
-    return render(request, 'polls/detail.html', {'question': question})  # 왜 context에 대입 안 했지?
+def detail(request, question_id): # 두번째 인자가 필요했음
+    question = get_object_or_404(Question, pk=question_id)  # 여기가 초이스 맞아? 아니었음
+    return render(request, 'polls/detail.html', {'question': question})  # 왜 context에 대입 안 했지?(단순 질문)
 
 def vote(request, question_id):
-    question : get_object_or_404(Question, pk=question_id)  # 퀘스천 객체 맞아?
+    question = get_object_or_404(Question, pk=question_id)  # 퀘스천 객체 맞아? 맞음
     try:
         selected_choice = question.choice_set.get(pk=request.POST['choice'])
     except (KeyError, Choice.DoesNotExist):
@@ -29,7 +29,7 @@ def vote(request, question_id):
         POST 데이터를 정상으로 처리하였으면
         항상 HttpResponseRedirect를 반환하여 리다이렉션을 처리함
         '''
-        return HttpResponseRedirect(reverse('polls/results', args=(question.id,))) # : 맞아? / 아니고?
+        return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))  # : 맞음
 
 def results(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
