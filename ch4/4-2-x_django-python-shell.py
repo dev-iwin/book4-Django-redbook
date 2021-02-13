@@ -2,6 +2,7 @@
 # >python manage.py shell
 # 입력란이 >>> 로 바뀜
 
+
 from polls.models import Question, Choice  # 프로젝트 디렉토리에서 장고 파이썬 쉘을 실행해야 하는 듯?
 from django.utils import timezone
 # from django.conf import timezone
@@ -12,6 +13,7 @@ import datetime as dt  # 책에는 없었는데.
 # SQL용어의 INSERT 문장을 내부적으로 실행
 q = Question(question_text="What's new thang?", pub_date=timezone.now())  #  settings.py 대로 됨
 q.save()
+
 
 # 4.2.2 Read - 데이터 조회 #########################################
 # QuerySet은 테이블로부터 꺼내 온 객체들의 콜렉션으로, SQL 용어의 SELECT 문장에 해당
@@ -34,7 +36,6 @@ File "<console>", line 1, in <module>
 AttributeError: type object 'Question' has no attribute 'object'
 '''
 
-
 Question.objects.filter(
     question_text__startswith='What'
 ).exclude(
@@ -43,6 +44,16 @@ Question.objects.filter(
     pub_date__gte=timezone.make_aware(dt.datetime(2018, 5, 5))
 )
 
+'''
+# pub_date__gte 가 datetime 객체인듯
+Question.objects.filter(
+    question_text__startswith='What'
+).exclude(
+    pub_date__gte=timezone.make_aware(timezone.now().date())
+).filter(
+    pub_date__gte=timezone.make_aware(timezone.datetime(2021, 2, 14))
+)
+'''
 '''
 C:\Users\USER\AppData\Local\Programs\Python\Python38\lib\site-packages\django\db\models\fields\__init__.py:1309: RuntimeWarning: DateTimeFi
 eld Question.pub_date received a naive datetime (2021-02-13 00:00:00) while time zone support is active.
@@ -64,6 +75,7 @@ eld Question.pub_date received a naive datetime (2021-02-13 00:00:00) while time
 # https://spoqa.github.io/2019/02/15/python-timezone.html
 # http://abh0518.net/tok/?p=635
 
+
 # 4.2.3 Update - 데이터 수정 #########################################
 # SQL 용어로 UPDATE 절에 해당
 ## 필드 속성 값 수정 후 save() 메소드
@@ -72,9 +84,65 @@ q.save()  # 변경사항을 데이터베이스에도 저장
 ## 여러 객체를 한꺼번에 수정하는 update() 메소드
 Question.objects.filter(pub_date__year=2018).update(question_text='Everything is the same')
 
-# 4.3.4 Delete - 데이터 삭제 #########################################
+
+# 4.2.4 Delete - 데이터 삭제 #########################################
 # delete() 메서드는 SQL 용어로 DELETE 절에 해당
 Question.objects.filter(pub_date__year=2021).delete()
 # 출력 결과 (7, {'polls.Choice': 3, 'polls.Question': 4})  # 없으면 (0, {})
 Question.objects.all().delete()  # 모두 지움
 # .objects.delete() << 이렇게는 안 됨
+
+
+# 4.2.5 polls 애플리케이션의 데이터 실습
+# 추가로 레코드를 입력하고 확인하는 작업
+
+# 예제 4-13 장고 파이썬 쉘 - 실습1
+
+from polls.models import Question, Choice
+
+Question.objects.all()
+Choice.objects.all()
+
+from django.utils import timezone
+q = Question(question_text="What's up?", pub_date=timezone.now())
+q.save()
+
+q.id
+
+q.question_text
+
+
+q.question_text = "What's new?2"
+q.save()
+
+Question.objects.all()
+
+exit()
+
+# 예제 4-14 장고 파이썬 쉘 - 실습2
+# 조건에 맞는 레코드 조회하는 기능
+# from polls.models import Question, Choice
+# from django.utils import timezone
+
+Question.objects.filter(id=1)
+Question.objects.filter(question_text__startswith='What')
+
+current_year = timezone.now().year
+Question.objects.filter(pub_date__year=current_year)
+Question.objects.get(id=8)
+Question.objects.get(pk=8)
+
+q = Question.objects.get(pk=2)
+q.choice_set.all()
+
+q.choice_set.create(choice_text='cat', votes=0)
+q.choice_set.create(choice_text='lover', votes=0)
+c = q.choice_set.create(choice_text='baby', votes=0)
+c.question
+q.choice_set.all()
+q.choice_set.count()
+
+Choice.objects.filter(question__pub_date__year=current_year)
+c = q.choice_set.filter(choice_text__startswith='c')
+q.choice_set.all()
+
