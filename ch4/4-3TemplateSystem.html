@@ -1,0 +1,54 @@
+<!--템플릿 주석-->
+{% comment "4.3 템플릿 시스템" %}
+{# 한줄 짜리 주석 #}
+
+# 4.3.1 템플릿 변수 형식
+{{ variable }}
+
+# 4.3.2 템플릿 필터 형식
+{{ variable|filter:factor}}
+
+# 4.3.3 템플릿 태그 형식
+{{ tag }}
+
+<!-- {% for %} -->
+
+<ul>
+    {% for athlete in athlete_list %}
+    <li>{{ forloop.counter }} : {{ althlete.name }}</li>
+    {% endfor %}
+</ul>
+
+
+<!-- {% if %} -->
+<!-- {% with %} -->
+
+{% if athlete_list|length > 1 %}
+    {% with number=athlete_list|length %} <!-- 가능??? -->
+    Number of athlete: {{ number }}
+{% elif athlete_in_the_locker_room_list %}
+    Athletes should be out of the locker room soon!
+{% else %}
+    No athletes.
+{% endif %}
+
+
+<!-- {% url %} -->
+<!-- {% csrf_token %} -->
+
+<form action="{% url 'namespace:veiw-name' argN %}" method="post">{% crsf_token %}
+    blah blah
+</form>
+
+
+<!-- {% load %} -->
+<!-- 사용자가 정의한 태그나 필터를( 코딩한 .py를) 불러오는 태그 -->
+{% load myfirstlibrary mypackage.mysecondlibrary %}
+
+
+
+
+
+
+
+{% endcomment "장고 프로젝트의 template file이 아닌 상태라.."%}
