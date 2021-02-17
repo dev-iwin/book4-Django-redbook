@@ -1,0 +1,16 @@
+{% extends "4-15_Parent.html" %}
+
+{% block title %}My amazing blog{% endblock %}
+{% block content %}
+{% for entry in blog_entries %}
+    <h2>{{ entry.title }}</h2>
+    <p>{{ entry.body }}</p>
+{% endfor %}
+{% endblock %}
+
+
+<!--
+1. 부모템플릿과 자식템플릿 위치 어디?
+2. html 파일 외 필요한 것은? url과 view?
+3. 자식템플릿 코딩한 뒤 렌더링 어떻게? runserver? 4-17 확인하고 싶음
+-->
