@@ -19,6 +19,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('polls/', include('polls.urls')),  # polls 앱 내부의 urls.py로 연결하는 코드 (계층구성, 확장에 용이)
+    path('books/', include('books.urls')),
 
 ]
 ''' path('polls/', views.index, name='index'),
