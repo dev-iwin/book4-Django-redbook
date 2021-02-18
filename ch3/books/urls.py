@@ -7,7 +7,7 @@ urlpatterns = [
     path('', views.BooksModelView.as_view(), name='index'),
 
     # /books/book/
-    path('book/', views.Booklist.as_view(), name='book_list'),
+    path('book/', views.BookList.as_view(), name='book_list'),
 
     # /books/author/
     path('author/', views.AuthorList.as_view(), name='author_list'),
