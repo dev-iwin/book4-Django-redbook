@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'polls.apps.PollsConfig',
-    'books.apps.BooksConfig',
+    'books.apps.BooksConfig',  # 설정 클래스로 등록한 경우 : verbose_name이 보이는 버전
+    # 'books',  # 모듈명으로 앱을 등록한 경우
 ]
 
 MIDDLEWARE = [
@@ -123,3 +124,36 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+"""
+LOGGING_CONFIG = 'logging.config.dictConfig'
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt': "%d/%b/%y %H:%M:%S"
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': [BASE_DIR / 'logs', 'mysite.log'],
+            'formatter': 'verbose'
+        },
+        'loggers': {
+            'django': {
+                'handlers': ['file'],
+                'level': 'DEBUG',
+            },
+            'mysite': {
+                'handlers': ['file'],
+                'level': 'DEBUG',
+            },
+        },
+    },
+}
+
+"""
