@@ -11,19 +11,22 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import sys
+import json
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+SECRETS_PATH = BASE_DIR / 'secrets.json'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '3@rqqb@xtu^=kroxd%e*(fwp2*z8#*n!b_l6l*#g&khj9=1u8z'
+SECRET_KEY = SECRETS_PATH.read_text()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True  # True는 개발모드, False는 운영모드
+DEBUG = False  # True는 개발모드, False는 운영모드
 
 ALLOWED_HOSTS = ['192.168.56.101', 'localhost', '127.0.0.1']
 # 개발모드에서는 생략 시 기본값 ['localhost', '127.0.0.1']로 간주
@@ -81,7 +84,7 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',  # 책에선 os.path.join(BASE_DIR, 'db.sqlite3'), 라고 되어있음
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -125,8 +128,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = BASE_DIR / 'www_dir' / 'static'
+
 """
-LOGGING_CONFIG = 'logging.config.dictConfig'
+# LOGGING_CONFIG = 'logging.config.dictConfig'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -140,20 +145,15 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': [BASE_DIR / 'logs', 'mysite.log'],
+            'filename': [BASE_DIR / 'logs' / 'mysite.log'],
             'formatter': 'verbose'
         },
         'loggers': {
-            'django': {
-                'handlers': ['file'],
-                'level': 'DEBUG',
-            },
-            'mysite': {
+            'polls': {
                 'handlers': ['file'],
                 'level': 'DEBUG',
             },
         },
     },
 }
-
 """
